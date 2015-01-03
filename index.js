@@ -15,7 +15,8 @@ var email = "test@example.com";
 var dropboxUrl = "https://www.dropbox.com/forgot";
 var dropboxField = "email";
 var iftttUrl = "https://ifttt.com/forgot";
-var iftttField = "user[email]";
+var iftttEmailField = "user[email]";
+var iftttTokenField = "authenticity_token";
 
 var jar = request.jar();
 
@@ -42,21 +43,31 @@ function respond(response, message) {
 
 function makeGetRequest(url, response) {
 	
-	request({url: url, jar: jar}, function(err, resp, body) {
+	request({uri: url, jar: jar}, function(err, resp, body) {
 		var thisResp = resp;
 		var thisBody = body;
 		var thisErr = err;
 
-		var token = getIFTTTToken(body);
-
-		console.log(jar);
-		makePostRequest(iftttUrl, iftttField, email, response);
+		var iftttToken = getIFTTTToken(body);
+		console.log("Made GET request to " + url);
+		//console.log(jar);
+		makePostRequest(iftttUrl, iftttEmailField, email, iftttTokenField, iftttToken, response);
 	});
 }
 
-function makePostRequest(url, fieldName, emailAddress, response) {
-	request.post({url: url, jar: jar}, fieldName + ":" + emailAddress, function(err, resp, body) {
-		console.log(jar);
-		respond(response, body);
+function makePostRequest(url, emailFieldName, emailAddress, tokenFieldName, token, response) {
+
+	var data = {};
+	data[emailFieldName] = emailAddress;
+	data[tokenFieldName] = token;
+
+	request.post({uri: url, jar: jar, form: data}, function(err, resp, body) {
+		//console.log(jar);
+		console.log("Made POST request to " + url + " with data: " + JSON.stringify(data, null, 2));
+		if (err) {
+			respond(response, err);
+		} else {
+			respond(response, body);
+		}
 	});	
 }
