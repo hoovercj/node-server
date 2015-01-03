@@ -47,7 +47,7 @@ function makeGetRequest(url, response) {
 		var thisBody = body;
 		var thisErr = err;
 
-		var token = getToken(body);
+		var token = getIFTTTToken(body);
 
 		console.log(jar);
 		makePostRequest(iftttUrl, iftttField, email, response);
