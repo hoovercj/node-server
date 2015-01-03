@@ -1,13 +1,62 @@
+// Require block -- imports all the needed libraries
 var express = require('express');
+var request = require('request');
+var cheerio = require('cheerio');
+var tough = require('tough-cookie');
 var app = express();
 
+
+// Initialization block
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(request, response) {
-  response.send('Hello World!');
+var email = "test@example.com";
+
+var dropboxUrl = "https://www.dropbox.com/forgot";
+var dropboxField = "email";
+var iftttUrl = "https://ifttt.com/forgot";
+var iftttField = "user[email]";
+
+var jar = request.jar();
+
+// Web Server Method Block
+app.get('/', function(req, resp) {  
+  jar = request.jar();
+  makeGetRequest(iftttUrl, resp);
 });
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
 });
+
+
+// Helper Method Block
+function getIFTTTToken(html) {
+	$ = cheerio.load(html);
+	return $('meta[name=csrf-token]').attr("content");
+}
+
+function respond(response, message) {
+	response.send("Token: " + message);
+}
+
+function makeGetRequest(url, response) {
+	
+	request({url: url, jar: jar}, function(err, resp, body) {
+		var thisResp = resp;
+		var thisBody = body;
+		var thisErr = err;
+
+		var token = getToken(body);
+
+		console.log(jar);
+		makePostRequest(iftttUrl, iftttField, email, response);
+	});
+}
+
+function makePostRequest(url, fieldName, emailAddress, response) {
+	request.post({url: url, jar: jar}, fieldName + ":" + emailAddress, function(err, resp, body) {
+		console.log(jar);
+		respond(response, body);
+	});	
+}

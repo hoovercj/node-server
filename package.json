@@ -7,7 +7,11 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "~4.9.x"
+    "express": "~4.9.x",
+    "request": "~2.51.x",
+    "needle": "~0.7.x",
+    "cheerio": "~0.18.x",
+    "tough-cookie": "~0.12.x"
   },
   "engines": {
     "node": "0.10.x"
