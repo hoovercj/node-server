@@ -10,20 +10,17 @@ var app = express();
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 
-var email = "test@example.com";
+var email = "login@codyhoover.com";
 
 var dropboxUrl = "https://www.dropbox.com/forgot";
 var dropboxField = "email";
-var iftttUrl = "https://ifttt.com/forgot";
-var iftttEmailField = "user[email]";
-var iftttTokenField = "authenticity_token";
 
 var jar = request.jar();
 
 // Web Server Method Block
 app.get('/', function(req, resp) {  
-  jar = request.jar();
-  makeGetRequest(iftttUrl, resp);
+  resetIFTTT(email);
+  respond(resp, "Done");
 });
 
 app.listen(app.get('port'), function() {
@@ -31,43 +28,46 @@ app.listen(app.get('port'), function() {
 });
 
 
-// Helper Method Block
+// IFTTT Helper Method Block
+var iftttUrl = "https://ifttt.com/forgot";
+var iftttEmailField = "user[email]";
+var iftttTokenField = "authenticity_token";
+
+function resetIFTTT(email) {
+	jar = request.jar();
+	makeIFTTTGetRequest(email);
+}
+
+function makeIFTTTGetRequest() {	
+	request({uri: iftttUrl, jar: jar}, function(err, resp, body) {
+		if (err) {
+			console.log(err);
+		}
+		var iftttToken = getIFTTTToken(body);
+		makeIFTTTPostRequest(email, iftttToken);
+	});
+}
+
 function getIFTTTToken(html) {
 	$ = cheerio.load(html);
 	return $('meta[name=csrf-token]').attr("content");
 }
 
-function respond(response, message) {
-	response.send("Token: " + message);
-}
-
-function makeGetRequest(url, response) {
-	
-	request({uri: url, jar: jar}, function(err, resp, body) {
-		var thisResp = resp;
-		var thisBody = body;
-		var thisErr = err;
-
-		var iftttToken = getIFTTTToken(body);
-		console.log("Made GET request to " + url);
-		//console.log(jar);
-		makePostRequest(iftttUrl, iftttEmailField, email, iftttTokenField, iftttToken, response);
-	});
-}
-
-function makePostRequest(url, emailFieldName, emailAddress, tokenFieldName, token, response) {
+function makeIFTTTPostRequest(emailAddress, token) {
 
 	var data = {};
-	data[emailFieldName] = emailAddress;
-	data[tokenFieldName] = token;
+	data[iftttEmailField] = emailAddress;
+	data[iftttTokenField] = token;
 
-	request.post({uri: url, jar: jar, form: data}, function(err, resp, body) {
-		//console.log(jar);
-		console.log("Made POST request to " + url + " with data: " + JSON.stringify(data, null, 2));
+	request.post({uri: iftttUrl, jar: jar, form: data}, function(err, resp, body) {
 		if (err) {
-			respond(response, err);
-		} else {
-			respond(response, body);
+			console.log(err);
 		}
 	});	
+}
+
+
+// Generic Helper Method Block
+function  respond(response, message) {
+	response.send("Token: " + message);
 }
