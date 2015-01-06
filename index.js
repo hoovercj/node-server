@@ -65,11 +65,20 @@ app.use(function (req, res, next) {
     next();
 });
 
+
+// Web Server TEST Method Block
+app.get('/resetpassword/test/', function(req, resp) {  
+	resetEmail = req.param('email');
+	testSite = req.param('site');
+	resetWebsite(resetEmail, testSite);
+	respond(resp, "Test: ressting password for " testSite + " at the site " + testSite);
+});
+
 // Web Server Method Block
 app.get('/resetpassword/:email', function(req, resp) {  
 	resetEmail = req.param('email');
 	resetAllWebsites(resetEmail);
-	respond(resp, resetEmail);
+	respond(resp, "All passwords reset for: " + resetEmail);
 });
 
 app.listen(app.get('port'), function() {
@@ -118,5 +127,5 @@ function getToken(website, html) {
 
 // Generic Helper Method Block
 function  respond(response, message) {
-	response.send("Passwords reset for: " + message);
+	response.send(message);
 }
