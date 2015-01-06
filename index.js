@@ -79,7 +79,6 @@ app.listen(app.get('port'), function() {
 function resetAllWebsites(email) {
 	var keys = Object.keys(websites);
 	for (var i=keys.length; i--;) {
-		console.log(JSON.stringify(websites[keys[i]]));
     	resetWebsite(email, websites[keys[i]]);
 	}
 }
@@ -87,7 +86,6 @@ function resetAllWebsites(email) {
 // Generic Website Method Block
 function resetWebsite(email, website) {
 	var cookieJar = request.jar();
-	console.log(JSON.stringify(website));
 	makeGetRequest(email, website, cookieJar);
 }
 
@@ -97,7 +95,6 @@ function makeGetRequest(email, website, jar) {
 			console.log(err);
 		}
 		var token = getToken(website, body);
-		console.log(token);
 		makePostRequest(email, website, jar, token);
 	});
 }
@@ -116,7 +113,6 @@ function makePostRequest(email, website, jar, token) {
 
 function getToken(website, html) {
 	$ = cheerio.load(html);
-	console.log(website.tokenTag + " -- " + website.tokenAttr);
 	return $(website.tokenTag).attr(website.tokenAttr);
 }
 
