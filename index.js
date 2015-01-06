@@ -68,8 +68,8 @@ app.use(function (req, res, next) {
 
 // Web Server TEST Method Block
 app.get('/resetpassword/test/', function(req, resp) {  
-	resetEmail = req.param('email');
-	testSite = req.param('site');
+	var resetEmail = req.param('email');
+	var testSite = req.param('site');
 	resetWebsite(resetEmail, testSite);
 	respond(resp, "Test: ressting password for " testSite + " at the site " + testSite);
 });
