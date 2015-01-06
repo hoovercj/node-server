@@ -22,6 +22,26 @@ var websites = {
 		tokenField: 'authenticity_token',
 		getUrl: 'https://ifttt.com/forgot',
 		postUrl: 'https://ifttt.com/forgot'
+	}, tumblr: {
+		data: {},
+		tokenTag: 'meta[name=tumblr-form-key]',
+		tokenAttr: 'content',
+		emailField: 'email',
+		tokenField: 'form_key',
+		getUrl: 'https://www.tumblr.com/forgot_password',
+		postUrl: 'https://www.tumblr.com/forgot_password'
+	}, myspace: {
+		data: { remindOption: 'em' },
+		emailField: 'email',
+		getUrl: 'https://myspace.com/account/forgotpassword',
+		postUrl: 'https://myspace.com/ajax/account/forgotpassword'
+	}, github: {
+		data: { commit: 'submit' },
+		tokenTag: 'meta[name=csrf-token]',
+		tokenAttr: 'content',
+		emailField: 'email',
+		getUrl: 'https://github.com/password_reset',
+		postUrl: 'https://github.com/password_reset'
 	}
 };
 
@@ -31,16 +51,23 @@ app.use(express.static(__dirname + '/public'));
 
 
 // Web Server Method Block
-app.get('/', function(req, resp) {  
-  //resetIFTTT(email);
-  resetWebsite(iftttEmail, websites['dropbox']);
-  resetWebsite(iftttEmail, websites['ifttt']);
-  respond(resp, "OK");
+app.get('/resetpassword/:email', function(req, resp) {  
+	resetEmail = req.param('email');
+	resetAllWebsites(resetEmail);
+	respond(resp, email);
 });
 
 app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'));
+	console.log("Node app is running at localhost:" + app.get('port'));
 });
+
+function resetAllWebsites(email) {
+	var keys = Object.keys(websites);
+	for (var i=keys.length; i--;) {
+		console.log(JSON.stringify(websites[keys[i]]));
+    	resetWebsite(email, websites[keys[i]]);
+	}
+}
 
 // Generic Website Method Block
 function resetWebsite(email, website) {
@@ -80,5 +107,5 @@ function getToken(website, html) {
 
 // Generic Helper Method Block
 function  respond(response, message) {
-	response.send("Token: " + message);
+	response.send("Passwords reset for: " + message);
 }
