@@ -101,6 +101,10 @@ AWS
 Username:
 Reddit, Neopets
 
+## Alternative Implementations
+
+A WebDriver like [PhantomJS](http://phantomjs.org/related-projects.html) might work to fully simulate filling out the form, especially for more complicated web flows or sites that intentionally obfuscate csrf tokens
+
 ## Documentation
 
 For more information about using Node.js on Heroku, see these Dev Center articles:
