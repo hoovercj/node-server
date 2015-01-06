@@ -72,6 +72,7 @@ app.get('/resetpassword/test/', function(req, resp) {
 	var resetEmail = req.param('email');
 	var testSite = req.param('site');
 	resetWebsite(resetEmail, websites[testSite]);
+	console.log('TEST: Resetting password for ' + resetEmail + " for " + testSite);
 	respond(resp, "Test: resetting password for " + resetEmail + " at the site " + testSite);
 });
 
@@ -79,6 +80,7 @@ app.get('/resetpassword/test/', function(req, resp) {
 app.get('/resetpassword/:email', function(req, resp) {  
 	resetEmail = req.param('email');
 	resetAllWebsites(resetEmail);
+	console.log('Resetting all passwords for: ' + resetEmail);
 	respond(resp, "All passwords reset for: " + resetEmail);
 });
 
