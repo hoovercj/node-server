@@ -69,7 +69,7 @@ app.use(function (req, res, next) {
 app.get('/resetpassword/:email', function(req, resp) {  
 	resetEmail = req.param('email');
 	resetAllWebsites(resetEmail);
-	respond(resp, email);
+	respond(resp, resetEmail);
 });
 
 app.listen(app.get('port'), function() {
