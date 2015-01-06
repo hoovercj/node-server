@@ -40,6 +40,7 @@ var websites = {
 		tokenTag: 'meta[name=csrf-token]',
 		tokenAttr: 'content',
 		emailField: 'email',
+		tokenField: 'authenticity_token',
 		getUrl: 'https://github.com/password_reset',
 		postUrl: 'https://github.com/password_reset'
 	}
