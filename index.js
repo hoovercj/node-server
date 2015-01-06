@@ -71,7 +71,7 @@ app.get('/resetpassword/test/', function(req, resp) {
 	var resetEmail = req.param('email');
 	var testSite = req.param('site');
 	resetWebsite(resetEmail, testSite);
-	respond(resp, "Test: ressting password for " testSite + " at the site " + testSite);
+	respond(resp, "Test: resetting password for " + resetEmail + " at the site " + testSite);
 });
 
 // Web Server Method Block
