@@ -70,7 +70,7 @@ app.use(function (req, res, next) {
 app.get('/resetpassword/test/', function(req, resp) {  
 	var resetEmail = req.param('email');
 	var testSite = req.param('site');
-	resetWebsite(resetEmail, testSite);
+	resetWebsite(resetEmail, websites[testSite]);
 	respond(resp, "Test: resetting password for " + resetEmail + " at the site " + testSite);
 });
 
