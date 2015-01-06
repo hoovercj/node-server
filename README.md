@@ -39,8 +39,10 @@ Passwords are currently being reset by submitting a GET request to fetch the sit
 Be sure to include the GET url and the POST url, even if they are the same, the names of the token and email parameters for the POST request, as well as the necessary information to extract the csrf token if it is needed. Additionally, some sites submit extra information with the post request. This can be hardcoded into a data object.
 
 ### Testing
-!! A work in progress !!
-After adding a site it is important to test it. Currently the main endpoint calls the reset for all sites. To test a particular site in development, hit the endpoint /resetpassword/test/?site=name&email=address
+
+After adding a site it is important to test it. Currently the main endpoint calls the reset for all sites. To test a particular site in development, hit the endpoint /resetpassword/test/?site=name&email=address via curl or some other method.
+
+Alternatively, you may use this [test form](http://localhost:4000/testresetpasswords/) to submit test requests.
 
 This must work before any additions will be merged.
 
