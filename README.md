@@ -42,7 +42,7 @@ Be sure to include the GET url and the POST url, even if they are the same, the 
 
 After adding a site it is important to test it. Currently the main endpoint calls the reset for all sites. To test a particular site in development, hit the endpoint /resetpassword/test/?site=name&email=address via curl or some other method.
 
-Alternatively, you may use this [test form](http://localhost:4000/testresetpasswords/) to submit test requests.
+~~Alternatively, you may use this [test form](http://localhost:4000/testresetpasswords/) to submit test requests.~~ Currently disabled.
 
 This must work before any additions will be merged.
 
@@ -106,6 +106,8 @@ Reddit, Neopets
 ## Alternative Implementations
 
 A WebDriver like [PhantomJS](http://phantomjs.org/related-projects.html) might work to fully simulate filling out the form, especially for more complicated web flows or sites that intentionally obfuscate csrf tokens
+
+[This Repository](https://github.com/hoovercj/phantom-password-resetter) has my current attempt at using PhantomJS via SpookyJS and CasperJS.
 
 ## Documentation
 
