@@ -30,7 +30,7 @@ $ heroku open
 
 The server responds to GET requests made to the url: https://peaceful-refuge-8041.herokuapp.com/resetpassword/
 
-For example, an email to https://peaceful-refuge-8041.herokuapp.com/resetpassword/test@example.com will attempt to reset the password for all sites for the email test@example.com
+For example, a request to https://peaceful-refuge-8041.herokuapp.com/resetpassword/test@example.com will attempt to reset the password for all sites for the email test@example.com
 
 ## Contributing
 
